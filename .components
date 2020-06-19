@@ -1,0 +1,9 @@
+---
+:orm: sequel
+:test: none
+:mock: none
+:script: jquery
+:renderer: none
+:stylesheet: none
+:namespace: Task1
+:migration_format: number

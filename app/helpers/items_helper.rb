@@ -16,7 +16,6 @@ module Task1
         dataset.map do |code,part_numbers|
           new_part_numbers = []
           part_numbers.each_with_index do |item,index|
-            p item, index
             new_part_numbers.push(Item.new(item[:part_number], can_highlight(part_numbers,index)))
           end
           {code => new_part_numbers}
@@ -33,6 +32,7 @@ module Task1
         (next_part_number_last_digit - current_part_number_last_digit) == 1
       end
     end
+
     helpers ItemsHelper
   end
 end

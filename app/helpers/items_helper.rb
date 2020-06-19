@@ -11,6 +11,7 @@ module Task1
         dataset.to_json
       end
 
+      private
       def add_highlight(dataset)
         dataset.map do |code,part_numbers|
           new_part_numbers = []

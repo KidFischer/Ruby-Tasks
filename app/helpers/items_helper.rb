@@ -11,7 +11,24 @@ module Task1
         dataset.to_json
       end
 
+      def create_temp_item_table
+        table_name = generate_table_name_with_prefix("temp_item")
+        Repository.create_temp_item_table(table_name)
+        table_name
+      end
+
       private
+      def generate_table_name_with_prefix(table_name_prefix)
+        timestamp = Integer(1e3*Time.now.to_f)
+        random_key = generate_code(6)
+        "#{table_name_prefix}_#{timestamp}_#{random_key}"
+      end
+
+      def generate_code(number)
+        charset = Array('A'..'Z') + Array('a'..'z')
+        Array.new(number) { charset.sample }.join
+      end
+
       def add_highlight(dataset)
         dataset.map do |code,part_numbers|
           new_part_numbers = []

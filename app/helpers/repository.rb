@@ -5,6 +5,16 @@ class Repository
         .to_hash_groups(:code)
   end
 
+  def self.create_temp_item_table(table_name)
+    Sequel::Model.db.create_table table_name do
+      String :part_number, size:50, null: false
+      String :name, size:500,  null: false
+      String :brand_code, size:4, fixed: true, null: false
+      index :part_number, unique:true
+      index :brand_code, unique:true
+    end
+  end
+
   private
   def self.get_items_join_with_parent_owner_brands(limit = -1)
     limit_setting = ""

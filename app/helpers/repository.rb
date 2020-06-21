@@ -31,12 +31,10 @@ class Repository
     limit_setting = ""
     limit_setting = "limit #{limit}" if limit > -1
 
-    "SELECT c.* from
-
-      (SELECT
+    "select c.* from(
+    SELECT distinct
         b.code,
         a.part_number
-
       FROM
         items a
       inner JOIN
@@ -47,12 +45,7 @@ class Repository
       WHERE
         b.code not like '%T012%'
         #{limit_setting}) c
-      GROUP BY
-        c.part_number,
-        c.code
-      order BY
-        CODE, part_number
-    "
+      order by c.code, c.part_number"
   end
 
 end

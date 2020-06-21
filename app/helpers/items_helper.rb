@@ -25,8 +25,9 @@ module Task1
         end
       end
 
-      def get_item_count_per_brand_code(table_name)
-        12
+      def get_brand_code_count(table_name)
+        dataset = Repository.get_item_count_per_brand_code(table_name)
+        dataset.all.to_json
       end
 
       private

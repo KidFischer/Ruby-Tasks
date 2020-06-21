@@ -15,8 +15,8 @@ Task1::App.controllers :items do
     amount = 10 if amount == 0
 
     table_name = create_temp_item_table
+    insert_rows_to_temp_item_table(table_name, amount)
+    #get_item_count_per_brand_code(table_name)
     table_name
-      #insert_rows_to_temp_item_table(table_name, amount)
-
   end
 end

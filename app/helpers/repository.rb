@@ -15,6 +15,11 @@ class Repository
     end
   end
 
+  def self.insert_to_temp_item_table(table_name, fields, values)
+    insert_statement = %[insert into #{table_name} (#{fields.join(", ")}) values('#{values.join("', '")}')]
+    Sequel::Model.db[insert_statement].insert
+  end
+
   private
   def self.get_items_join_with_parent_owner_brands(limit = -1)
     limit_setting = ""

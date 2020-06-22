@@ -1,8 +1,9 @@
 class Repository
-  def self.get_items(limit)
+  def self.get_items(page, limit)
     Sequel::Model.db
-        .fetch(get_items_join_with_parent_owner_brands(limit))
+        .fetch(get_items_join_with_parent_owner_brands(page, limit))
         .to_hash_groups(:code)
+
   end
 
   def self.get_item_count_per_brand_code(table_name)
@@ -27,12 +28,14 @@ class Repository
   end
 
   private
-  def self.get_items_join_with_parent_owner_brands(limit = -1)
+  def self.get_items_join_with_parent_owner_brands(page, limit)
+    offset = limit*(page-1)+1
+    offset = 1 if offset < 1
     limit_setting = ""
-    limit_setting = "limit #{limit}" if limit > -1
+    limit_setting = "limit #{offset}, #{limit}"
 
     "select c.* from(
-    SELECT distinct
+      SELECT distinct
         b.code,
         a.part_number
       FROM

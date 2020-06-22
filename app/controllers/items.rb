@@ -13,14 +13,15 @@ Task1::App.controllers :items do
   end
 
   get :index do
-    redirect "/items/1000"
+    redirect "/items/1/1000"
   end
 
-  get :index, :with => :item_limit do
+  get :index, :with => [:page_num, :item_limit] do
+    page_num = params[:page_num].to_i
+    page_num = 1 if page_num < 1
     item_limit = params[:item_limit].to_i
     item_limit = 1000 if item_limit == 0
 
-    #TODO: use paging instead of return huge chunk to client
-    get_items(item_limit)
+    get_items(page_num, item_limit)
   end
 end

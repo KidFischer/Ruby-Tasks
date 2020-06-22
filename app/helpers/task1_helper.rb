@@ -3,8 +3,8 @@ module Task1
   class App
     module ItemsHelper
 
-      def get_items(limit)
-        dataset = Repository.get_items(limit)
+      def get_items(page, limit)
+        dataset = Repository.get_items(page, limit)
         dataset = add_highlight(dataset)
         dataset.to_json
       end

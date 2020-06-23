@@ -1,8 +1,8 @@
 # Helper methods defined here can be accessed in any controller or view in the application
-require_relative 'repository'
 
-module Task2
-  class Task2Helper
+module Task1
+  class App
+    module TempItemHelper
       def create_temp_item_table
         table_name = generate_table_name_with_prefix("temp_item")
         Repository.create_temp_item_table(table_name)
@@ -10,11 +10,14 @@ module Task2
       end
 
       def insert_rows_to_temp_item_table(table_name, amount)
-        fields = ["part_number","name","brand_code"]
+        brand_code = generate_code(4,{no_digit:true})
+        rows = []
         amount.times do
           values = generate_temp_item_values
-          Repository.insert_to_temp_item_table(table_name, fields, values)
+          values[:brand_code] = brand_code
+          rows << values
         end
+        Repository.insert_to_temp_item_table(table_name,rows)
       end
 
       def get_brand_code_count(table_name)
@@ -32,8 +35,8 @@ module Task2
       private def generate_temp_item_values
         part_number = generate_code(rand(25..50))
         name = generate_code(rand(250..500))
-        brand_code = generate_code(4,{no_digit:true})
-        [part_number, name, brand_code]
+        {part_number: part_number, name: name}
+
       end
 
       private def generate_table_name_with_prefix(table_name_prefix)
@@ -41,5 +44,8 @@ module Task2
         random_key = generate_code(6,{no_digit: true})
         "#{table_name_prefix}_#{timestamp}_#{random_key}"
       end
+    end
+
+    helpers TempItemHelper
   end
 end

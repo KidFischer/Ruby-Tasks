@@ -3,7 +3,6 @@ class Repository
     Sequel::Model.db
         .fetch(get_items_join_with_parent_owner_brands(page, limit))
         .to_hash_groups(:code)
-
   end
 
   def self.get_item_count_per_brand_code(table_name)
@@ -22,16 +21,14 @@ class Repository
     end
   end
 
-  def self.insert_to_temp_item_table(table_name, fields, values)
-    insert_statement = %[insert into #{table_name} (#{fields.join(", ")}) values('#{values.join("', '")}')]
-    Sequel::Model.db[insert_statement].insert
+  def self.insert_to_temp_item_table(table_name, rows)
+    Sequel::Model.db[table_name.to_sym].multi_insert(rows)
   end
 
   private
   def self.get_items_join_with_parent_owner_brands(page, limit)
     offset = limit*(page-1)+1
     offset = 1 if offset < 1
-    limit_setting = ""
     limit_setting = "limit #{offset}, #{limit}"
 
     "select c.* from(
@@ -48,7 +45,9 @@ class Repository
       WHERE
         b.code not like '%T012%'
         #{limit_setting}) c
-      order by c.code, c.part_number"
+    order by
+      c.code,
+      c.part_number"
   end
 
 end

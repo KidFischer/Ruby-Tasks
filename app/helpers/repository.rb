@@ -3,12 +3,11 @@ class Repository
     Sequel::Model.db
         .fetch(get_items_join_with_parent_owner_brands(page, limit))
         .to_hash_groups(:code)
-  end
+    end
 
   def self.get_item_count_per_brand_code(table_name)
-    select_statement = "SELECT brand_code, COUNT(*) AS count FROM #{table_name} GROUP BY brand_code"
-    Sequel::Model.db
-        .fetch(select_statement)
+    dataset = Sequel::Model.db[table_name.to_sym]
+    dataset.group_and_count(:brand_code)
   end
 
   def self.create_temp_item_table(table_name)
